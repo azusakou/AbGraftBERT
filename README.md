@@ -2,7 +2,7 @@
 
 ## Introduction
 
-<p align="center"><img src="AbGraftBERT/figures/graft.pdf" width=80%></p>
+<p align="center"><img src="AbGraftBERT/figures/graft.png" width=80%></p>
 <p align="center"><b>Schematic illustration of the ABGNN framework</b></p>
 
 
