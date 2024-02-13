@@ -123,7 +123,7 @@ class AntibodyTransformerSentenceEncoder(nn.Module):
             self.vocab_size, self.embedding_dim, self.padding_idx
         )
         self.embed_scale = embed_scale
-        self.use_esm = False
+
         if q_noise > 0:
             self.quant_noise = apply_quant_noise_(
                 nn.Linear(self.embedding_dim, self.embedding_dim, bias=False),
@@ -178,20 +178,7 @@ class AntibodyTransformerSentenceEncoder(nn.Module):
         self.origin_layers = all_layers[10:]
         self.fusing_lambda = 0.5
 
-        if self.use_esm:
-            self.layers.extend(
-                [nn.Linear(768, 640)]
-            )
-
-            self.layers.extend(
-                torch.nn.ModuleList(self.gene_esm())
-            )
-
-            self.layers.extend(
-                [nn.Linear(640, 768)]
-            )
-            self.second_start_layer = 8
-        else:
+        if 1:
             self.layers.extend(
                 [nn.Linear(768, 768)]
             )
@@ -243,14 +230,6 @@ class AntibodyTransformerSentenceEncoder(nn.Module):
         self.layers.load_state_dict(layers_state_dict, strict=True)
         del state_dict
         return self.layers
-
-    def gene_esm(self):
-        from transformers import EsmForMaskedLM
-        bert_type = 'facebook/esm2_t30_150M_UR50D'
-        model = EsmForMaskedLM.from_pretrained(bert_type, cache_dir='cache')
-        module_esm = model.esm.encoder.layer[-8:]
-        del model
-        return module_esm
 
     def build_embedding(self, vocab_size, embedding_dim, padding_idx):
         return nn.Embedding(vocab_size, embedding_dim, padding_idx)
@@ -344,10 +323,6 @@ class AntibodyTransformerSentenceEncoder(nn.Module):
             elif (i == 10) or (i== self.second_start_layer+11):
                 if i == 10:
                     x_q = x.clone()
-                #if self.use_esm:
-                #    x = layer(x)
-                #else:
-
                 x = layer(x)
 
                 if i == self.second_start_layer+11:
