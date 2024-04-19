@@ -17,7 +17,7 @@ The AbBERT is the pre-trained antibody model. Its `soft' prediction will be fed 
 
 ## Pretrain a model on sequence data
 
-All preprocessed data was from [ABGNN](https://github.com/KyGao/ABGNN)
+All preprocessed data was from [ABGNN](https://github.com/KyGao/ABGNN), code is based on [ABGNN](https://github.com/KyGao/ABGNN). Thanks!
 For  training, we can run:
 ```shell
 bash pretrain-abbert.sh
@@ -25,11 +25,11 @@ bash pretrain-abbert.sh
 
 ## Finetune on sequence and structure co-design tasks
 
-For experiment 1, raw data is from [MEAN](https://github.com/THUNLP-MT/MEAN), code is from [ABGNN](https://github.com/KyGao/ABGNN). 
+For experiment 1, raw data is from [MEAN](https://github.com/THUNLP-MT/MEAN).
 
-For experiment 2, raw data is from [HSRN](https://github.com/wengong-jin/abdockgen), code is from [ABGNN](https://github.com/KyGao/ABGNN). 
+For experiment 2, raw data is from [HSRN](https://github.com/wengong-jin/abdockgen). 
 
-For experiment 3, raw data is from [RefineGNN](https://github.com/wengong-jin/RefineGNN), code is from [ABGNN](https://github.com/KyGao/ABGNN). 
+For experiment 3, raw data is from [RefineGNN](https://github.com/wengong-jin/RefineGNN). 
 
 The finetuning scripts are following:
 
