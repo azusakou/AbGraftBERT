@@ -17,7 +17,7 @@ The AbBERT is the pre-trained antibody model. Its `soft' prediction will be fed 
 
 ## Pretrain a model on sequence data
 
-All preprocessed data was from [ABGNN](https://github.com/KyGao/ABGNN), code is based on [ABGNN](https://github.com/KyGao/ABGNN). Thanks!
+All preprocessed data is from [ABGNN](https://github.com/KyGao/ABGNN), with the code primarily based on this repository, thanks!
 For  training, we can run:
 ```shell
 bash pretrain-abbert.sh
