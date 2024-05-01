@@ -2,11 +2,9 @@
 
 ## Introduction
 
-<p align="center"><img src="AbGraftBERT/figures/graft.png" width=80%></p>
-<p align="center"><b>Schematic illustration of the ABGNN framework</b></p>
+<p align="center"><img src="AbGraftBERT/figures/graft.png" width=70%></p>
+<p align="center"><b>Schematic illustration of AbGraftBERT</b></p>
 
-
-The AbBERT is the pre-trained antibody model. Its `soft' prediction will be fed into the sequence GNN $\cal{H}$<sub>seq</sub>, after encoding and generating the updated sequence, structure GNN $\cal{H}$<sub>str</sub> encodes the updated graph and then predict the structures. The sequence and structure prediction iteratively refine $T$ times.
 
 
 ## Dependencies
@@ -20,7 +18,7 @@ The AbBERT is the pre-trained antibody model. Its `soft' prediction will be fed 
 All preprocessed data is from [ABGNN](https://github.com/KyGao/ABGNN), with the code primarily based on this repository, thanks!
 For  training, we can run:
 ```shell
-bash pretrain-abbert.sh
+bash pretrain-selfgrafting.sh
 ```
 
 ## Finetune on sequence and structure co-design tasks
