@@ -18,7 +18,7 @@
 All preprocessed data is from [ABGNN](https://github.com/KyGao/ABGNN), with the code primarily based on this repository, thanks!
 For  training, we can run:
 ```shell
-bash pretrain-selfgrafting.sh
+bash pretrain-abgraftbert.sh
 ```
 
 ## Finetune on sequence and structure co-design tasks
