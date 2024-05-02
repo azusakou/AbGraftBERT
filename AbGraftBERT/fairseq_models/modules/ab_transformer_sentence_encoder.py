@@ -123,7 +123,7 @@ class AntibodyTransformerSentenceEncoder(nn.Module):
             self.vocab_size, self.embedding_dim, self.padding_idx
         )
         self.embed_scale = embed_scale
-        self.use_esm = False
+
         if q_noise > 0:
             self.quant_noise = apply_quant_noise_(
                 nn.Linear(self.embedding_dim, self.embedding_dim, bias=False),
@@ -178,20 +178,7 @@ class AntibodyTransformerSentenceEncoder(nn.Module):
         self.origin_layers = all_layers[10:]
         self.fusing_lambda = 0.5
 
-        if self.use_esm:
-            self.layers.extend(
-                [nn.Linear(768, 640)]
-            )
-
-            self.layers.extend(
-                torch.nn.ModuleList(self.gene_esm())
-            )
-
-            self.layers.extend(
-                [nn.Linear(640, 768)]
-            )
-            self.second_start_layer = 8
-        else:
+        if 1:
             self.layers.extend(
                 [nn.Linear(768, 768)]
             )
@@ -324,7 +311,6 @@ class AntibodyTransformerSentenceEncoder(nn.Module):
             inner_states.append(x)
 
         for i, layer in enumerate(self.layers):
-            #print(i, x.size())
             if i < 10:
                 past_key_value = past_key_values[i] if past_key_values is not None else None
                 x, _ = layer(x, past_key_value=past_key_value)#;print(x.size())
