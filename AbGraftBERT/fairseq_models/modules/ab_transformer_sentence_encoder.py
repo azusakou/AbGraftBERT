@@ -244,13 +244,6 @@ class AntibodyTransformerSentenceEncoder(nn.Module):
         del state_dict
         return self.layers
 
-    def gene_esm(self):
-        from transformers import EsmForMaskedLM
-        bert_type = 'facebook/esm2_t30_150M_UR50D'
-        model = EsmForMaskedLM.from_pretrained(bert_type, cache_dir='cache')
-        module_esm = model.esm.encoder.layer[-8:]
-        del model
-        return module_esm
 
     def build_embedding(self, vocab_size, embedding_dim, padding_idx):
         return nn.Embedding(vocab_size, embedding_dim, padding_idx)
