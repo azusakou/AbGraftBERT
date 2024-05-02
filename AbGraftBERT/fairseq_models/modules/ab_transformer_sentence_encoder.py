@@ -123,7 +123,7 @@ class AntibodyTransformerSentenceEncoder(nn.Module):
             self.vocab_size, self.embedding_dim, self.padding_idx
         )
         self.embed_scale = embed_scale
-
+        self.use_esm = False
         if q_noise > 0:
             self.quant_noise = apply_quant_noise_(
                 nn.Linear(self.embedding_dim, self.embedding_dim, bias=False),
@@ -178,7 +178,20 @@ class AntibodyTransformerSentenceEncoder(nn.Module):
         self.origin_layers = all_layers[10:]
         self.fusing_lambda = 0.5
 
-        if 1:
+        if self.use_esm:
+            self.layers.extend(
+                [nn.Linear(768, 640)]
+            )
+
+            self.layers.extend(
+                torch.nn.ModuleList(self.gene_esm())
+            )
+
+            self.layers.extend(
+                [nn.Linear(640, 768)]
+            )
+            self.second_start_layer = 8
+        else:
             self.layers.extend(
                 [nn.Linear(768, 768)]
             )
@@ -230,6 +243,14 @@ class AntibodyTransformerSentenceEncoder(nn.Module):
         self.layers.load_state_dict(layers_state_dict, strict=True)
         del state_dict
         return self.layers
+
+    def gene_esm(self):
+        from transformers import EsmForMaskedLM
+        bert_type = 'facebook/esm2_t30_150M_UR50D'
+        model = EsmForMaskedLM.from_pretrained(bert_type, cache_dir='cache')
+        module_esm = model.esm.encoder.layer[-8:]
+        del model
+        return module_esm
 
     def build_embedding(self, vocab_size, embedding_dim, padding_idx):
         return nn.Embedding(vocab_size, embedding_dim, padding_idx)
@@ -303,12 +324,6 @@ class AntibodyTransformerSentenceEncoder(nn.Module):
         # account for padding while computing the representation
         if padding_mask is not None:
             x = x * (1 - padding_mask.unsqueeze(-1).type_as(x))
-
-        # if past_key_values is not None:
-        #     prefix_attention_mask = torch.zeros(padding_mask.shape[0], 1).to(padding_mask.device)
-        #     padding_mask = torch.cat((prefix_attention_mask, padding_mask), dim=1)
-
-        # B x T x C -> T x B x C
         x = x.transpose(0, 1)
 
         inner_states = []
@@ -324,7 +339,6 @@ class AntibodyTransformerSentenceEncoder(nn.Module):
                 if i == 10:
                     x_q = x.clone()
                 x = layer(x)
-
                 if i == self.second_start_layer+11:
                     x_k = x.clone()
                     x_v = x.clone()
