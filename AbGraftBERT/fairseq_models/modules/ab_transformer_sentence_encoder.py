@@ -18,8 +18,6 @@ from fairseq.modules.quant_noise import quant_noise as apply_quant_noise_
 from fairseq.data import Dictionary
 
 from .ab_transformer_sentence_encoder_layer import TransformerSentenceEncoderLayer
-from .ReprogBertGAN import EsmForMaskedLMProt
-from .ReprogBertGAN import EsmConfigProtein
 from .attention import SimplifiedScaledDotProductAttention as att
 
 def init_bert_params(module):
