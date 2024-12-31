@@ -52,3 +52,5 @@ python inference.py \
     --cktpath ${model_ckpt_path}}/checkpoint_best.pt \
     --data_path ${dataset_path}
 ```
+
+Here are [pt](https://www.dropbox.com/scl/fo/5fy5kv0n2gejicdgdc4d2/AD45w0LpgTpWZyqNhrZz6pU?rlkey=z4i6imr59hl918nbfcxadv0wf&st=ahlvldyp&dl=0) files for exp1 and exp2
